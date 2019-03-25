@@ -72,6 +72,13 @@ class GetDom {
   }
 
   /**
+   * 爬虫信息显示框动画
+   */
+  show() {
+    this._tab.style.transform = 'scale(1,1)'
+  }
+
+  /**
    * 全局监听，鼠标移开时回复背景颜色
    */
   restoreBackgroundColor() {
@@ -86,7 +93,16 @@ class GetDom {
   getId() {
     window.addEventListener('click', (event) => {
       this._id = event.target.id
-      console.log(`ID: ${this._id}`)
+      event.preventDefault()
+    })
+  }
+
+  /**
+   * 全局监听点击事件，获取点击元素的类名
+   */
+  getClassName() {
+    window.addEventListener('click', (event) => {
+      this.confirmDom(this._element)
       event.preventDefault()
     })
   }
@@ -124,7 +140,6 @@ class GetDom {
   addBodyHeight() {
     window.onload = () => {
       document.body.style.height = document.querySelector('body').offsetHeight + 600 + 'px'
-      console.log(document.querySelector('body').offsetHeight)
     }
   }
 
@@ -137,8 +152,6 @@ class GetDom {
     this._hrefList = []
     let count = 1;
     if (dom.getElementsByTagName('a').length > 0) {
-      console.log(dom.getElementsByTagName('a'))
-
       for (let x of dom.getElementsByTagName('a')) {
         let singleHref = `超链接${count++}为: ${x.href}\n`
         this._hrefList.push(singleHref)
@@ -147,15 +160,6 @@ class GetDom {
     return this._hrefList.join('')
   }
 
-  /**
-   * 全局监听点击事件，获取点击元素的类名
-   */
-  getClassName() {
-    window.addEventListener('click', (event) => {
-      this.confirmDom(this._element)
-      event.preventDefault()
-    })
-  }
 
   /**
    * 接受popup.js消息，'start'开始爬虫模式，'end'关闭爬虫模式，并重新刷新网页
@@ -180,12 +184,6 @@ class GetDom {
       });
   }
 
-  /**
-   * 爬虫信息显示框动画
-   */
-  show() {
-    this._tab.style.transform = 'scale(1,1)'
-  }
 }
 const target = new GetDom()
 target._intiTab();
